@@ -1,3 +1,7 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 import datetime
 import os
 import re
@@ -11,6 +15,7 @@ from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
 from langchain_chroma.vectorstores import Chroma
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from langchain.schema import Document
