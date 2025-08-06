@@ -16,4 +16,4 @@ pdfminer.six==20250506
 pypdfium2==4.30.0
 fpdf2==2.8.3
 langchain-chroma==0.2.5  # 추가됨
-sqlite-web
+pysqlite3-binary
