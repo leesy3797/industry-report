@@ -236,97 +236,97 @@ if st.session_state.db_articles_loaded:
     st.write(f"DB에 저장된 총 {len(st.session_state.db_articles_loaded)}개의 기사가 있습니다.")
     st.dataframe(df_db_display, use_container_width=True)
 
-# --- 임베딩 및 벡터 DB 관리 섹션 ---
-st.markdown("---")
-st.subheader("⚙️ 임베딩 및 벡터 DB 관리")
-db_articles_exist_for_embed = bool(st.session_state.db_articles_loaded) or bool(load_articles_from_db())
-if st.button("DB 기사 임베딩 및 벡터 DB 저장", key="embed_to_chroma_button", disabled=not db_articles_exist_for_embed or st.session_state.crawling_active):
-    if not db_articles_exist_for_embed:
-        st.warning("먼저 DB에 저장된 기사가 있어야 임베딩을 진행할 수 있습니다. 'DB에서 기사 불러오기'를 클릭하거나 크롤링 후 DB에 저장해주세요.")
-    else:
-        st.session_state.crawling_active = True
-        status_placeholder_embed = st.empty()
-        progress_bar_placeholder_embed = st.empty()
+# # --- 임베딩 및 벡터 DB 관리 섹션 ---
+# st.markdown("---")
+# st.subheader("⚙️ 임베딩 및 벡터 DB 관리")
+# db_articles_exist_for_embed = bool(st.session_state.db_articles_loaded) or bool(load_articles_from_db())
+# if st.button("DB 기사 임베딩 및 벡터 DB 저장", key="embed_to_chroma_button", disabled=not db_articles_exist_for_embed or st.session_state.crawling_active):
+#     if not db_articles_exist_for_embed:
+#         st.warning("먼저 DB에 저장된 기사가 있어야 임베딩을 진행할 수 있습니다. 'DB에서 기사 불러오기'를 클릭하거나 크롤링 후 DB에 저장해주세요.")
+#     else:
+#         st.session_state.crawling_active = True
+#         status_placeholder_embed = st.empty()
+#         progress_bar_placeholder_embed = st.empty()
 
-        def embed_progress_callback(message, progress_val):
-            status_placeholder_embed.info(message)
-            progress_bar_placeholder_embed.progress(progress_val)
+#         def embed_progress_callback(message, progress_val):
+#             status_placeholder_embed.info(message)
+#             progress_bar_placeholder_embed.progress(progress_val)
 
-        try:
-            status_placeholder_embed.info("DB 기사 적합성 판정 및 임베딩 중... (시간이 다소 소요될 수 있습니다.)")
-            progress_bar_placeholder_embed.progress(0.0)
+#         try:
+#             status_placeholder_embed.info("DB 기사 적합성 판정 및 임베딩 중... (시간이 다소 소요될 수 있습니다.)")
+#             progress_bar_placeholder_embed.progress(0.0)
 
-            articles_from_db_for_embed = load_articles_from_db()
-            embed_and_store_articles_to_chroma(
-                articles=articles_from_db_for_embed,
-                progress_callback=embed_progress_callback
-            )
-            st.success("기사 임베딩 및 벡터 DB 저장이 완료되었습니다.")
-            st.session_state.chroma_status = get_chroma_status()
-            progress_bar_placeholder_embed.empty()
-            status_placeholder_embed.empty()
-        except Exception as e:
-            st.error(f"임베딩 중 오류 발생: {e}")
-        finally:
-            st.session_state.crawling_active = False
-            st.rerun()
+#             articles_from_db_for_embed = load_articles_from_db()
+#             embed_and_store_articles_to_chroma(
+#                 articles=articles_from_db_for_embed,
+#                 progress_callback=embed_progress_callback
+#             )
+#             st.success("기사 임베딩 및 벡터 DB 저장이 완료되었습니다.")
+#             st.session_state.chroma_status = get_chroma_status()
+#             progress_bar_placeholder_embed.empty()
+#             status_placeholder_embed.empty()
+#         except Exception as e:
+#             st.error(f"임베딩 중 오류 발생: {e}")
+#         finally:
+#             st.session_state.crawling_active = False
+#             st.rerun()
 
-# --- ChromaDB 현황 및 시각화 섹션 ---
+# # --- ChromaDB 현황 및 시각화 섹션 ---
 
-st.markdown("---")
-st.subheader("📊 벡터 DB (ChromaDB) 현황")
-if st.button("ChromaDB 현황 새로고침", key="refresh_chroma_status_button", disabled=st.session_state.crawling_active):
-    st.session_state.chroma_status = get_chroma_status()
+# st.markdown("---")
+# st.subheader("📊 벡터 DB (ChromaDB) 현황")
+# if st.button("ChromaDB 현황 새로고침", key="refresh_chroma_status_button", disabled=st.session_state.crawling_active):
+#     st.session_state.chroma_status = get_chroma_status()
 
-if st.session_state.chroma_status:
-    st.write(f"**총 임베딩 문서 수 (ChromaDB)**: {st.session_state.chroma_status.get('총 문서 수 (ChromaDB)', 0)}개")
-    st.write(f"**SQLite에 저장된 전체 기사 수**: {st.session_state.chroma_status.get('SQLite에 저장된 전체 기사 수', 0)}개")
-    st.write("**기사 적합도 판정 분포 (SQLite 기준)**:")
-    suitability_scores_data = st.session_state.chroma_status.get("기사 적합도 점수 분포 (SQLite 기준)", {})
+# if st.session_state.chroma_status:
+#     st.write(f"**총 임베딩 문서 수 (ChromaDB)**: {st.session_state.chroma_status.get('총 문서 수 (ChromaDB)', 0)}개")
+#     st.write(f"**SQLite에 저장된 전체 기사 수**: {st.session_state.chroma_status.get('SQLite에 저장된 전체 기사 수', 0)}개")
+#     st.write("**기사 적합도 판정 분포 (SQLite 기준)**:")
+#     suitability_scores_data = st.session_state.chroma_status.get("기사 적합도 점수 분포 (SQLite 기준)", {})
 
-    suitable_count = suitability_scores_data.get(1, 0)
-    unsuitable_count = suitability_scores_data.get(0, 0)
+#     suitable_count = suitability_scores_data.get(1, 0)
+#     unsuitable_count = suitability_scores_data.get(0, 0)
 
-    st.write(f"- **적합 (1)**: {suitable_count}개")
-    st.write(f"- **부적합 (0)**: {unsuitable_count}개")
+#     st.write(f"- **적합 (1)**: {suitable_count}개")
+#     st.write(f"- **부적합 (0)**: {unsuitable_count}개")
 
-    if suitable_count + unsuitable_count > 0:
-        chart_data = pd.DataFrame({
-            '판정': ['적합', '부적합'],
-            '개수': [suitable_count, unsuitable_count]
-        })
-        st.bar_chart(chart_data.set_index('판정'))
-    else:
-        st.info("적합도 판정 데이터가 없습니다. 기사 임베딩을 먼저 진행해주세요.")
+#     if suitable_count + unsuitable_count > 0:
+#         chart_data = pd.DataFrame({
+#             '판정': ['적합', '부적합'],
+#             '개수': [suitable_count, unsuitable_count]
+#         })
+#         st.bar_chart(chart_data.set_index('판정'))
+#     else:
+#         st.info("적합도 판정 데이터가 없습니다. 기사 임베딩을 먼저 진행해주세요.")
 
-    st.markdown("#### 벡터 DB 검색 테스트")
-    search_query_input = st.text_input("검색할 문구를 입력하세요 (예: 한화에어로스페이스 방산 수출)", key="chroma_search_input",
-                                     disabled=st.session_state.crawling_active)
-    search_k = st.slider("가져올 결과 수", min_value=1, max_value=10, value=3, key="chroma_search_k",
-                          disabled=st.session_state.crawling_active)
+#     st.markdown("#### 벡터 DB 검색 테스트")
+#     search_query_input = st.text_input("검색할 문구를 입력하세요 (예: 한화에어로스페이스 방산 수출)", key="chroma_search_input",
+#                                      disabled=st.session_state.crawling_active)
+#     search_k = st.slider("가져올 결과 수", min_value=1, max_value=10, value=3, key="chroma_search_k",
+#                           disabled=st.session_state.crawling_active)
 
-    search_filter_suitability = st.checkbox("적합한 기사만 검색", value=True, key="chroma_filter_checkbox",
-                                            disabled=st.session_state.crawling_active)
+#     search_filter_suitability = st.checkbox("적합한 기사만 검색", value=True, key="chroma_filter_checkbox",
+#                                             disabled=st.session_state.crawling_active)
 
-    if st.button("벡터 검색 실행", key="run_vector_search_button", disabled=st.session_state.crawling_active):
-        if search_query_input:
-            with st.spinner("벡터 검색 실행 중..."):
-                filter_dict = {"suitability_score": 1} if search_filter_suitability else None
-                st.session_state.chroma_search_results = search_chroma_by_query(
-                    search_query_input,
-                    k=search_k,
-                    filter_dict=filter_dict
-                )
-            if st.session_state.chroma_search_results:
-                df_search_results = pd.DataFrame(st.session_state.chroma_search_results)
-                df_search_results = df_search_results.sort_values(by='score', ascending=True)
-                st.dataframe(df_search_results[['title', 'publish_date', 'suitability_score', 'score', 'url', 'content_preview']], use_container_width=True)
-            else:
-                st.info("검색 결과가 없거나 필터링 조건에 맞는 문서가 없습니다.")
-        else:
-            st.warning("검색할 문구를 입력해주세요.")
-else:
-    st.info("ChromaDB 현황을 확인하려면 'ChromaDB 현황 새로고침' 버튼을 눌러주세요. (기사 임베딩 후 확인 가능)")
+#     if st.button("벡터 검색 실행", key="run_vector_search_button", disabled=st.session_state.crawling_active):
+#         if search_query_input:
+#             with st.spinner("벡터 검색 실행 중..."):
+#                 filter_dict = {"suitability_score": 1} if search_filter_suitability else None
+#                 st.session_state.chroma_search_results = search_chroma_by_query(
+#                     search_query_input,
+#                     k=search_k,
+#                     filter_dict=filter_dict
+#                 )
+#             if st.session_state.chroma_search_results:
+#                 df_search_results = pd.DataFrame(st.session_state.chroma_search_results)
+#                 df_search_results = df_search_results.sort_values(by='score', ascending=True)
+#                 st.dataframe(df_search_results[['title', 'publish_date', 'suitability_score', 'score', 'url', 'content_preview']], use_container_width=True)
+#             else:
+#                 st.info("검색 결과가 없거나 필터링 조건에 맞는 문서가 없습니다.")
+#         else:
+#             st.warning("검색할 문구를 입력해주세요.")
+# else:
+#     st.info("ChromaDB 현황을 확인하려면 'ChromaDB 현황 새로고침' 버튼을 눌러주세요. (기사 임베딩 후 확인 가능)")
 
 # -----------------------------------------------------------------------------
 
