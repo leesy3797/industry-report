@@ -74,7 +74,6 @@ importlib_metadata==8.7.0
 importlib_resources==6.5.2
 ipykernel==6.30.0
 ipython==9.4.0
-ipython_pygments_lexers==1.1.1
 jedi==0.19.2
 Jinja2==3.1.6
 joblib==1.5.1
