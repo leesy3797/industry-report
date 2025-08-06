@@ -1,4 +1,5 @@
-import sqlite3
+# import sqlite3
+import pysqlite3 as sqlite3
 import pandas as pd
 import os
 

@@ -2,7 +2,10 @@
 import os
 import time
 import datetime
-import sqlite3
+# import sqlite3
+
+import pysqlite3 as sqlite3
+
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
