@@ -17,3 +17,4 @@ pypdfium2==4.30.0
 fpdf2==2.8.3
 langchain-chroma==0.2.5  # 추가됨
 pysqlite3-binary
+aiosqlite==0.21.0
