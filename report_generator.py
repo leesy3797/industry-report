@@ -2,9 +2,9 @@
 import os
 import time
 import datetime
-# import sqlite3
+import sqlite3
 
-import pysqlite3 as sqlite3
+# import pysqlite3 as sqlite3
 
 from typing import List, Dict, Any
 from dotenv import load_dotenv
@@ -62,14 +62,7 @@ def initialize_reports_db():
         cursor = conn.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS reports (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                report_type TEXT NOT NULL,
-                company TEXT NOT NULL,
-                year INTEGER NOT NULL,
-                month INTEGER,
-                content TEXT,
-                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE(report_type, company, year, month)
+
             );
         """)
         conn.commit()

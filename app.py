@@ -9,11 +9,12 @@ st.set_page_config(
 
 # st.Page를 사용하여 페이지들을 정의합니다. (이 부분도 유지)
 pages = [
-    st.Page("pages/home.py", title="[0] 레포트 작성", icon="🏠", default=True),
-    st.Page("pages/report_viewer_1.py", title="[1] 연도별 핵심 이슈 분석", icon="📊"),
-    st.Page("pages/report_viewer_2.py", title="[2] 핵심 키워드 요약", icon="📝"),
-    st.Page("pages/report_viewer_3.py", title="[3] 기업 트렌드 분석", icon="📈"),
-    st.Page("pages/report_viewer_4.py", title="[4] 미래 모습 보고서", icon="🚀")
+    # st.Page("pages/home.py", title="[Home] 레포트 작성", icon="🏠", default=True),
+    st.Page("pages/async_home.py", title="[Home] 레포트 작성", icon="🏠", default=True),
+    st.Page("pages/async_report_viewer_1.py", title="[1] 연도별 핵심 이슈 분석", icon="📊"),
+    st.Page("pages/async_report_viewer_2.py", title="[2] 핵심 키워드 요약", icon="📝"),
+    st.Page("pages/async_report_viewer_3.py", title="[3] 기업 트렌드 분석", icon="📈"),
+    st.Page("pages/async_report_viewer_4.py", title="[4] 미래 모습 보고서", icon="🚀")
 ]
 
 # 네비게이션 메뉴를 생성하고, 선택된 페이지 객체를 가져옵니다. (이 부분도 유지)

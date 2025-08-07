@@ -3,3 +3,13 @@ industry/
 *.ipynb
 *.html
 __pycache__/
+
+*/home.py
+*/report_viewer_1.py
+*/report_viewer_2.py
+*/report_viewer_3.py
+*/report_viewer_4.py
+
+data_manager.py 
+future_report_generator.py 
+hankyung_crawler.py
