@@ -1,8 +1,15 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+
 # async_report_generator.py
 import os
 import time
 import datetime
 import sqlite3
+import pysqlite3 as sqlite3
+
 import re
 import asyncio
 from typing import List, Dict, Any, Optional

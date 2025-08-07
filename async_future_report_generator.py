@@ -1,6 +1,6 @@
-# __import__('pysqlite3')
-# import sys
-# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import datetime
 import os
@@ -9,7 +9,9 @@ import hashlib
 import time
 import asyncio 
 from typing import List, Optional
-import sqlite3
+# import sqlite3
+import pysqlite3 as sqlite3
+
 from tenacity import retry, stop_after_attempt, wait_exponential, RetryError
 from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
