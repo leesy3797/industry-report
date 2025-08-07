@@ -91,7 +91,7 @@ with st.sidebar:
         "제목만": "title",
         "내용만": "content"
     }
-    selected_area_display = st.radio("검색할 영역", list(area_options.keys()), index=0, key="area_radio", disabled=is_disabled)
+    selected_area_display = st.radio("검색할 영역", list(area_options.keys()), index=1, key="area_radio", disabled=is_disabled)
     area = area_options[selected_area_display]
     st.subheader("날짜 범위")
     col1, col2 = st.columns(2)
