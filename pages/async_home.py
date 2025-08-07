@@ -75,7 +75,7 @@ with st.sidebar:
         
     is_disabled = st.session_state.crawling_active or not st.session_state.username
     st.subheader("기본 검색어")
-    query = st.text_input("검색할 키워드", key="query_input", disabled=is_disabled)
+    query = st.text_input("검색할 기업명", key="query_input", disabled=is_disabled)
     st.session_state.report_query_for_display = query
     st.subheader("정렬 방식")
     sort_options = {
