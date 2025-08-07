@@ -417,10 +417,10 @@ if run_button_clicked: # 버튼 클릭 여부를 이 변수로 확인
 
 # --- 🗑️ 리포트 삭제 UI 추가 ---
 st.markdown("---")
-st.subheader("🗑️ 생성된 리포트 삭제")
+st.subheader("🗑️ 생성된 리포트 삭제 (삭제 후에만 재생성 가능)")
 
 report_delete_query = st.text_input(
-    "삭제할 리포트의 키워드",
+    "삭제할 리포트의 기업명",
     value=st.session_state.report_query_for_display,
     key="report_delete_query_input",
     disabled=is_disabled
