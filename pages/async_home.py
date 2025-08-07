@@ -12,7 +12,8 @@ from async_data_manager import (
     initialize_reports_db,
     save_articles_to_db,
     load_articles_from_db,
-    reset_articles_db
+    reset_articles_db,
+    delete_report_from_db
 )
 # 리포트 생성 모듈 임포트
 from async_report_generator import (
@@ -223,7 +224,7 @@ if st.session_state.db_articles_loaded:
 st.markdown("---")
 st.subheader("📊 리포트 생성")
 
-report_query = st.text_input("리포트 생성용 키워드 (예: cj대한통운)", value=st.session_state.report_query_for_display, key="report_query_input", disabled=is_disabled)
+report_query = st.text_input("리포트 생성을 원하는 기업명 (예: cj대한통운)", value=st.session_state.report_query_for_display, key="report_query_input", disabled=is_disabled)
 
 
 # 비동기 버튼 클릭 핸들러
@@ -413,6 +414,55 @@ if run_button_clicked: # 버튼 클릭 여부를 이 변수로 확인
             update_ui_for_process_future("미래 모습 보고서 생성 중 오류 발생.", 0.0)
         finally:
             st.session_state.crawling_active = False
+
+# --- 🗑️ 리포트 삭제 UI 추가 ---
+st.markdown("---")
+st.subheader("🗑️ 생성된 리포트 삭제")
+
+report_delete_query = st.text_input(
+    "삭제할 리포트의 키워드",
+    value=st.session_state.report_query_for_display,
+    key="report_delete_query_input",
+    disabled=is_disabled
+)
+
+report_options = {
+    "연도별 핵심 이슈 분석": "page1",
+    "핵심 키워드 요약": "page2",
+    "기업 트렌드 분석": "page3",
+    "미래 모습 보고서": "page4",
+    "모든 리포트": "all"
+}
+selected_report_to_delete = st.selectbox(
+    "삭제할 리포트 유형",
+    list(report_options.keys()),
+    key="report_delete_selectbox"
+)
+
+if st.button("선택한 리포트 삭제", key="delete_report_button", disabled=is_disabled or not report_delete_query):
+    if not report_delete_query:
+        st.warning("삭제할 리포트의 키워드를 입력해주세요.")
+    else:
+        with st.spinner(f"[{report_delete_query}] 리포트 삭제 중..."):
+            report_key_to_delete = report_options[selected_report_to_delete]
+            try:
+                if report_key_to_delete == "all":
+                    for key in ["page1", "page2", "page3", "page4"]:
+                        # 'delete_report_from_db' 함수는 사용자가 구현해야 함
+                        asyncio.run(delete_report_from_db(st.session_state.username, report_delete_query, key))
+                        # 세션 상태도 초기화
+                        st.session_state[f"report_{key}_result"] = None
+                    st.success(f"키워드 '{report_delete_query}'에 대한 모든 리포트가 성공적으로 삭제되었습니다.")
+                else:
+                    # 'delete_report_from_db' 함수는 사용자가 구현해야 함
+                    asyncio.run(delete_report_from_db(st.session_state.username, report_delete_query, report_key_to_delete))
+                    # 세션 상태도 초기화
+                    st.session_state[f"report_{report_key_to_delete}_result"] = None
+                    st.success(f"키워드 '{report_delete_query}'에 대한 '{selected_report_to_delete}' 리포트가 성공적으로 삭제되었습니다.")
+            except Exception as e:
+                st.error(f"리포트 삭제 중 오류 발생: {e}")
+            st.rerun()
+
 
 # 크롤링/리포트 생성 중이 아닐 때 현재 상태를 다시 표시
 if not st.session_state.crawling_active:

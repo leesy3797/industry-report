@@ -273,6 +273,33 @@ async def load_reports_from_db(username: str = None, report_type: str = None, qu
         print(f"리포트 불러오는 중 오류 발생: {e}")
     return reports
 
+
+async def delete_report_from_db(username: str, query: str, report_type: str):
+    """
+    사용자의 특정 리포트를 DB에서 삭제하는 비동기 함수
+    """
+    try:
+        async with aiosqlite.connect(REPORTS_DATABASE_FILE) as db:
+            if report_type == "all":
+                # '모든 리포트' 선택 시, 해당 사용자와 키워드(company)에 대한 모든 리포트 삭제
+                await db.execute(
+                    "DELETE FROM reports WHERE username = ? AND company = ?;",
+                    (username, query)
+                )
+                print(f"알림: 사용자 '{username}', 키워드 '{query}'에 대한 모든 리포트가 성공적으로 삭제되었습니다.")
+            else:
+                # 특정 리포트 유형 선택 시, 해당 리포트만 삭제
+                await db.execute(
+                    "DELETE FROM reports WHERE username = ? AND company = ? AND report_type = ?;",
+                    (username, query, report_type)
+                )
+                print(f"알림: 사용자 '{username}', 키워드 '{query}', 유형 '{report_type}'의 리포트가 성공적으로 삭제되었습니다.")
+            
+            await db.commit()
+    except aiosqlite.Error as e:
+        print(f"오류: 리포트 삭제 중 오류 발생 - {e}")
+
+
 # 모듈 단독 실행 시 테스트 코드
 if __name__ == "__main__":
     print("--- data_manager.py 모듈 테스트 시작 ---")
