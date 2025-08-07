@@ -1,15 +1,21 @@
+# 폴더 제외
 industry/
+__pycache__/
+reports_test.db
+
+# 파일 확장자 제외
 .env
 *.ipynb
 *.html
-__pycache__/
 
-*/home.py
-*/report_viewer_1.py
-*/report_viewer_2.py
-*/report_viewer_3.py
-*/report_viewer_4.py
-
-data_manager.py 
-future_report_generator.py 
+# 특정 파일 제외
+data_manager.py
+future_report_generator.py
+report_generator.py
 hankyung_crawler.py
+
+# pages 폴더 아래의 파일들
+pages/report_viewer_1.py
+pages/report_viewer_2.py
+pages/report_viewer_3.py
+pages/report_viewer_4.py
