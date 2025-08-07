@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 # 앱 전체의 기본 페이지 설정을 합니다. (이 부분은 유지)
 st.set_page_config(
@@ -43,16 +44,17 @@ with st.sidebar:
     # 버튼 클릭 시 실행될 함수
     def send_thumbs_up():
         st.session_state.thumbs_up_count += 1
+        st.toast("옛다 받아라 👍")
+        time.sleep(.5)
         st.toast("따봉 감사합니다! 🙌")
-        st.balloons()
 
     # 따봉 버튼 추가
     st.button("따봉 날리기", on_click=send_thumbs_up, use_container_width=True)
 
     # 현재 따봉 횟수 표시
     if st.session_state.thumbs_up_count > 0:
-        st.markdown(f"### 현재 따봉 횟수: {st.session_state.thumbs_up_count}회")
+        st.markdown(f"#### 현재 따봉수: {st.session_state.thumbs_up_count}회")
 
-    st.write("") # 간격 조절용 빈 줄
+    # st.write("") # 간격 조절용 빈 줄
 
-    st.write("Created by SeungYong Lee✨")
+    # st.write("Created by SeungYong Lee✨")

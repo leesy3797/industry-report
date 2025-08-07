@@ -199,7 +199,7 @@ else:
 st.markdown("---")
 st.subheader("📂 저장된 DB 기사 목록")
 if st.button("내 기사 DB 리셋", key="reset_db_button", disabled=is_disabled):
-    with st.spinner("DB를 초기화하는 중..."):
+    with st.spinner("DB를 초기화하는 중...", show_time = True):
         asyncio.run(reset_articles_db(st.session_state.username))
         st.session_state.db_articles_loaded = []
         st.session_state.last_crawled_articles = []
