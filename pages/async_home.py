@@ -427,13 +427,13 @@ report_delete_query = st.text_input(
 )
 
 report_options = {
-    "연도별 핵심 이슈 분석": "page1",
-    "핵심 키워드 요약": "page2",
-    "기업 트렌드 분석": "page3",
-    "미래 모습 보고서": "page4",
-    "모든 리포트": "all"
+    "(1) 연도별 핵심 이슈 분석": "yearly",
+    "(2) 핵심 키워드 요약": "keyword",
+    "(3) 기업 트렌드 분석": "trend",
+    "(4) 미래 모습 보고서": "future",
+    "모두 삭제": "all"
 }
-selected_report_to_delete = st.selectbox(
+selected_report_to_delete_label = st.selectbox(
     "삭제할 리포트 유형",
     list(report_options.keys()),
     key="report_delete_selectbox"
@@ -441,24 +441,22 @@ selected_report_to_delete = st.selectbox(
 
 if st.button("선택한 리포트 삭제", key="delete_report_button", disabled=is_disabled or not report_delete_query):
     if not report_delete_query:
-        st.warning("삭제할 리포트의 키워드를 입력해주세요.")
+        st.warning("삭제할 리포트의 기업명을 입력해주세요.")
     else:
         with st.spinner(f"[{report_delete_query}] 리포트 삭제 중..."):
-            report_key_to_delete = report_options[selected_report_to_delete]
+            report_key_to_delete = report_options[selected_report_to_delete_label]
             try:
                 if report_key_to_delete == "all":
-                    for key in ["page1", "page2", "page3", "page4"]:
-                        # 'delete_report_from_db' 함수는 사용자가 구현해야 함
-                        asyncio.run(delete_report_from_db(st.session_state.username, report_delete_query, key))
-                        # 세션 상태도 초기화
+                    asyncio.run(delete_report_from_db(st.session_state.username, report_delete_query, "all"))
+                    # 모든 리포트 세션 상태를 None으로 초기화
+                    for key in ["yearly", "keyword", "trend", "future"]:
                         st.session_state[f"report_{key}_result"] = None
-                    st.success(f"키워드 '{report_delete_query}'에 대한 모든 리포트가 성공적으로 삭제되었습니다.")
+                    st.success(f"{st.session_state.username}님의 '{report_delete_query}'에 대한 모든 리포트가 성공적으로 삭제되었습니다.")
                 else:
-                    # 'delete_report_from_db' 함수는 사용자가 구현해야 함
                     asyncio.run(delete_report_from_db(st.session_state.username, report_delete_query, report_key_to_delete))
-                    # 세션 상태도 초기화
+                    # 선택된 리포트의 세션 상태를 None으로 초기화
                     st.session_state[f"report_{report_key_to_delete}_result"] = None
-                    st.success(f"키워드 '{report_delete_query}'에 대한 '{selected_report_to_delete}' 리포트가 성공적으로 삭제되었습니다.")
+                    st.success(f"{session_state.username}님의 '{report_delete_query}'에 대한 '{selected_report_to_delete_label}' 리포트가 성공적으로 삭제되었습니다.")
             except Exception as e:
                 st.error(f"리포트 삭제 중 오류 발생: {e}")
             st.rerun()
