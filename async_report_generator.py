@@ -1,15 +1,7 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
-
 # async_report_generator.py
 import os
 import time
 import datetime
-import sqlite3
-import pysqlite3 as sqlite3
-
 import re
 import asyncio
 from typing import List, Dict, Any, Optional
@@ -37,6 +29,19 @@ from async_data_manager import (
 
 # 새롭게 분리한 프롬프트 파일을 임포트
 from prompts import MONTHLY_REPORT_PROMPT, YEARLY_REPORT_PROMPT, KEYWORD_SUMMARY_PROMPT, COMPANY_TREND_ANALYSIS_PROMPT
+
+
+try:
+    __import__('pysqlite3')
+    import sys
+    import pysqlite3 as sqlite3
+
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    print("Using pysqlite3 library.")
+except ImportError:
+    # Fallback to standard sqlite3 if pysqlite3 is not available
+    import sqlite3
+    print("Could not import pysqlite3, falling back to sqlite3.") 
 
 # .env 파일 로드
 load_dotenv()

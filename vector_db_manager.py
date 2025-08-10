@@ -1,7 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 import os
 import chromadb
 # from google import genai
@@ -20,6 +16,16 @@ from data_manager import update_article_suitability_score, load_articles_from_db
 
 # ChromaDB의 네이티브 임베딩 함수를 임포트
 import chromadb.utils.embedding_functions as embedding_functions
+
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    print("Using pysqlite3 library.")
+except ImportError:
+    # Fallback to standard sqlite3 if pysqlite3 is not available
+    import sqlite3
+    print("Could not import pysqlite3, falling back to sqlite3.") 
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()

@@ -1,7 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 import datetime
 import os
 import re
@@ -9,7 +5,6 @@ import hashlib
 import time
 import asyncio
 from typing import List, Optional
-import pysqlite3 as sqlite3
 
 from tenacity import retry, stop_after_attempt, wait_exponential, RetryError
 from dotenv import load_dotenv
@@ -30,6 +25,17 @@ import requests
 # 이 파일 외부에 정의되어 있다고 가정합니다.
 from prompts import FUTURE_STRATEGY_ROADMAP_PROMPT
 from async_report_generator import get_llm_model, initialize_reports_db, save_report_to_db, load_reports_from_db, _postprocess_report_output
+
+try:
+    __import__('pysqlite3')
+    import sys
+    import pysqlite3 as sqlite3
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    print("Using pysqlite3 library.")
+except ImportError:
+    # Fallback to standard sqlite3 if pysqlite3 is not available
+    import sqlite3
+    print("Could not import pysqlite3, falling back to sqlite3.") 
 
 load_dotenv()
 
