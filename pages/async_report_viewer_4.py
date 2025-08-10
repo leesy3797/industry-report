@@ -25,7 +25,7 @@ st.title("🚀 미래 모습 보고서")
 with st.sidebar:
     st.header("🔍 보고서 조회 설정")
     st.session_state.username = st.text_input("사용자 이름", value=st.session_state.username)
-    st.session_state.report_query_for_display = st.text_input("기업명 (분석 대상)", value=st.session_state.report_query_for_display)
+    st.session_state.report_query_for_display = st.text_input("기업명 (분석 대상)", value=st.session_state.report_query_for_display).lower()
 
 # 사용자 이름과 기업명이 모두 입력된 경우에만 리포트 표시
 if st.session_state.username and st.session_state.report_query_for_display:

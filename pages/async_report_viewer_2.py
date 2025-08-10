@@ -26,7 +26,7 @@ st.title("📄 핵심 키워드 요약")
 with st.sidebar:
     st.header("🔍 보고서 조회 설정")
     st.session_state.username = st.text_input("사용자 이름", value=st.session_state.username)
-    st.session_state.report_query_for_display = st.text_input("기업명 (분석 대상)", value=st.session_state.report_query_for_display)
+    st.session_state.report_query_for_display = st.text_input("기업명 (분석 대상)", value=st.session_state.report_query_for_display).lower()
 
 if st.session_state.username and st.session_state.report_query_for_display:
     report_query_display = st.session_state.report_query_for_display 
