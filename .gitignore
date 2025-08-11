@@ -2,11 +2,13 @@
 industry/
 __pycache__/
 reports_test.db
+test_reports.db
 
 # 파일 확장자 제외
 .env
 *.ipynb
 *.html
+*.pdf
 
 # 특정 파일 제외
 data_manager.py
