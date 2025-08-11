@@ -68,7 +68,7 @@ async def _get_serper_results_with_retry(serper_search_tool, query_string: str, 
 
             if link and link not in processed_links:
                 try:
-                    res = requests.get(link, timeout = 10)
+                    res = requests.get(link, timeout = 60)
                     loader = UnstructuredURLLoader(urls=[link])
                     documents = await loader.aload()
 
