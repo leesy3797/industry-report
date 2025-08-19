@@ -456,7 +456,7 @@ if st.button("선택한 리포트 삭제", key="delete_report_button", disabled=
                     asyncio.run(delete_report_from_db(st.session_state.username, report_delete_query, report_key_to_delete))
                     # 선택된 리포트의 세션 상태를 None으로 초기화
                     st.session_state[f"report_{report_key_to_delete}_result"] = None
-                    st.success(f"{session_state.username}님의 '{report_delete_query}'에 대한 '{selected_report_to_delete_label}' 리포트가 성공적으로 삭제되었습니다.")
+                    st.success(f"{st.session_state.username}님의 '{report_delete_query}'에 대한 '{selected_report_to_delete_label}' 리포트가 성공적으로 삭제되었습니다.")
             except Exception as e:
                 st.error(f"리포트 삭제 중 오류 발생: {e}")
             st.rerun()
